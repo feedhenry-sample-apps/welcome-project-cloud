@@ -1,5 +1,6 @@
 {
-      "name": "Welcome Project-cloud",
-      "type": "cloud_nodejs",
-      "repoUrl": "https://github.com/feedhenry/welcome-project-cloud.git"
-    }
+  "name": "Welcome Project-cloud",
+  "type": "cloud_nodejs",
+  "repoUrl": "https://github.com/feedhenry/welcome-project-cloud.git",
+  "repoBranch": "refs/heads/5202-ngui-template-configs"
+}
