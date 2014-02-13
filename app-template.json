@@ -1,4 +1,5 @@
 {
+  "id": "welcome_project_cloud",
   "name": "Welcome Project-cloud",
   "type": "cloud_nodejs",
   "repoUrl": "https://github.com/feedhenry-sample-apps/welcome-project-cloud.git",
