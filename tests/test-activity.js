@@ -1,5 +1,5 @@
 //test app activity function
-var cacheClient = require("../cacheclient").cacheClient;
+var cacheClient = require("cacheclient.js").cacheClient;
 
 $fh = {};
 $fh.cache = function(params, cb){
@@ -15,9 +15,9 @@ $fh.cache = function(params, cb){
   }
 };
 
-var recordActivity = require("../record_activity").recordActivity;
-var listActivity = require("../record_activity").listActivity;
-var setCacheKey = require("../record_activity").setCacheKey;
+var recordActivity = require("record_activity.js").recordActivity;
+var listActivity = require("record_activity.js").listActivity;
+var setCacheKey = require("record_activity.js").setCacheKey;
 
 exports.dependencies = ['cache'];
 

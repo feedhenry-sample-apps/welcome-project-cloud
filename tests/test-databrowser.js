@@ -1,6 +1,6 @@
 //test databrowser function
-var saveData = require('../databrowser').saveData;
-var connectDB = require('../databrowser').connectDB;
+var saveData = require('databrowser.js').saveData;
+var connectDB = require('databrowser.js').connectDB;
 
 var dbConn;
 var dbUrl = "mongodb://127.0.0.1:27017/integrationtest";
@@ -30,4 +30,3 @@ exports.testDataBrowser = function(test, assert){
     });
   });
 };
-

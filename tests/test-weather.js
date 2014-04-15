@@ -1,8 +1,8 @@
 //test getWeather function, use mock service
-var getWeather = require('../weather').getWeather;
-var setWeatherProvider = require('../weather').setWeatherProvider;
-var getCacheClient = require("../weather").getCacheClient;
-var getCacheKey = require("../weather").getCacheKey;
+var getWeather = require('weather.js').getWeather;
+var setWeatherProvider = require('weather.js').setWeatherProvider;
+var getCacheClient = require("weather.js").getCacheClient;
+var getCacheKey = require("weather.js").getCacheKey;
 
 var SERVICE_PROVIDER = "http://127.0.0.1:9006";
 

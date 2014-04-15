@@ -4,7 +4,7 @@ DEP=tests/dependencies.json
 ACCEPT_TEST=tests/acceptance-tests.js
 
 test:
-	whiskey --tests "${TEST_FILES}" --only-essential-dependencies --dependencies "${DEP}"
+	env NODE_PATH=./lib whiskey --tests "${TEST_FILES}" --only-essential-dependencies --dependencies "${DEP}"
 
 accept:
 	whiskey --tests "${ACCEPT_TEST}" --only-essential-dependencies --dependencies "${DEP}"
