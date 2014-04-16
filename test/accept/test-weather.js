@@ -23,7 +23,6 @@ exports.testGetWeather = function(finish){
       cacheClient.get(cacheKey, function(err, cached){
         assert.ok(!err);
         assert.ok(cached);
-        cacheClient.quit();
         finish();
       });
     });

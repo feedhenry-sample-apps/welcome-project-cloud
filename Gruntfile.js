@@ -41,12 +41,19 @@ module.exports = function(grunt) {
             }
         },
       shell: {
-        turbo: {
+        unit: {
           options: {
             stdout: true,
             stderr: true
           },
           command: 'env NODE_PATH=. ./node_modules/.bin/turbo test/unit'
+        },
+        accept: {
+          options: {
+            stdout: true,
+            stderr: true
+          },
+          command: 'env NODE_PATH=. ./node_modules/.bin/turbo --setUp=test/accept/server.js --tearDown=test/accept/server.js test/accept'
         },
         coverage: {
           options: {
@@ -70,7 +77,9 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-shell');
 
     // turbo task
-    grunt.registerTask('test', ['shell:turbo']);
+    grunt.registerTask('test', ['shell:unit', 'shell:accept']);
+    grunt.registerTask('unit', ['shell:unit']);
+    grunt.registerTask('accept', ['shell:accept']);
     grunt.registerTask('coverage', ['shell:coverage']);
 
     //Making grunt default to force in order not to break the project.
