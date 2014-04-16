@@ -24,8 +24,6 @@ var recordActivity = record.recordActivity;
 var listActivity = record.listActivity;
 var setCacheKey = record.setCacheKey;
 
-//exports.dependencies = ['cache'];
-
 var testCacheKey = "test_activity_cache_key";
 
 exports.setUp = function(finish){

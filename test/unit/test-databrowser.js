@@ -1,30 +1,28 @@
 //test databrowser function
-var saveData = require('databrowser.js').saveData;
-var connectDB = require('databrowser.js').connectDB;
-
+var db = require('lib/databrowser.js');
+var saveData = db.saveData;
+var connectDB = db.connectDB;
+var assert = require('assert');
+var util = require('util');
 var dbConn;
 var dbUrl = "mongodb://127.0.0.1:27017/integrationtest";
 var COLLECTION = "testOnly";
 
-exports.dependencies = ['db'];
-
-exports.testDataBrowser = function(test, assert){
+exports.testDataBrowser = function(finish){
   connectDB(dbUrl, function(err, db){
-    assert.isNull(err, 'db error');
-    assert.isDefined(db, 'db is not defined');
+    assert.ok(!err, 'Unexpected error: ', util.inspect(err));
     var collection = db.collection(COLLECTION);
-    assert.isDefined(collection, 'collection is not found');
+    assert.ok(collection, 'collection is not found');
     collection.remove({}, function(err, removed){
-      assert.isNull(err, 'collection remove error');
+      assert.ok(!err, 'Unexpected error: ', util.inspect(err));
       saveData({collection: COLLECTION, document: {name: 'test'}}, function(err, res){
-        assert.isNull(err, 'saveData error');
-        assert.match(res.status, /ok/i, "saveData res is not ok");
+        assert.ok(!err, 'Unexpected error: ', util.inspect(err));
         collection.count({name: 'test'}, function(err, count){
-          assert.isNull(err, 'collection count error');
+          assert.ok(!err, 'Unexpected error: ', util.inspect(err));
           assert.equal(1, count, 'collection count = ' + count);
           console.log("collection count = " + count);
           db.close(); //Important to close the connection otherwise the test will timeout!!
-          test.finish();
+          finish();
         });
       });
     });
