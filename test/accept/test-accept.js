@@ -6,7 +6,7 @@ var assert = require('assert');
 var baseUrl = "http://127.0.0.1:8052/cloud/";
 
 exports.testCloudCall = function(finish){
-  request({url: baseUrl + "hello", method: 'POST', json: true}, function(err, response, body){
+  request({url: baseUrl + "hello", method: 'GET', json: true}, function(err, response, body){
     console.log("body", body);
     assert.ok(!err, 'Unexpected error: ', util.inspect(err));
     console.log("body", body.text);
@@ -17,6 +17,7 @@ exports.testCloudCall = function(finish){
 
 exports.testGetWeather = function(finish){
   request({url: baseUrl + "getWeather", method: 'POST', json: {"lat":52.251,"lon":-7.153}}, function(err, response, body){
+  console.log("body: " + util.inspect(body))
     assert.ok(!err, 'Unexpected error: ', util.inspect(err));
     assert.equal(200, response.statusCode);
     assert.ok(body.data);

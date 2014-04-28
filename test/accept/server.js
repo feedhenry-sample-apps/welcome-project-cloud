@@ -1,11 +1,10 @@
 var mbaas = require('fh-mbaas-express');
 var express = require('express');
-var mainjs = require('lib/main.js');
 
 var app = express();
-app.use('/sys', mbaas.sys(mainjs));
+app.use('/sys', mbaas.sys([]));
 app.use('/mbaas', mbaas.mbaas);
-app.use('/cloud', mbaas.cloud(mainjs));
+app.use('/cloud', require('lib/cloud.js')());
 
 app.use('/', function(req, res){
   res.end('Your Cloud App is Running');
