@@ -8,12 +8,12 @@ var app = express();
 app.use('/sys', mbaas.sys(securableEndpoints));
 app.use('/mbaas', mbaas.mbaas);
 
-app.use('/cloud', require('./lib/cloud.js')());
+app.use('/', require('./lib/cloud.js')());
 
 // You can define custom URL handlers here, like this one:
-app.use('/', function(req, res){
-  res.end('Your Cloud App is Running');
-});
+//app.use('/', function(req, res){
+//  res.end('Your Cloud App is Running');
+//});
 
 // Important that this is last!
 app.use(mbaas.errorHandler());

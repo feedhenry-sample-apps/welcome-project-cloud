@@ -40,6 +40,13 @@ module.exports = function(grunt) {
                 logConcurrentOutput: true
             }
         },
+        env : {
+          options : {},
+          // environment variables - see https://github.com/jsoverson/grunt-env for more information
+          local: {
+            FH_USE_LOCAL_DB: true
+          }
+        },
       shell: {
         unit: {
           options: {
@@ -66,7 +73,20 @@ module.exports = function(grunt) {
                 './node_modules/.bin/istanbul report',
                 'echo "See html coverage at: `pwd`/coverage/lcov-report/index.html"'
             ].join('&&')
-        }
+        },
+        coverage_accept: {
+        options: {
+          stdout: true,
+          stderr: true
+        },
+        command: [
+          'rm -rf coverage cov-accept',
+          'env NODE_PATH=. ./node_modules/.bin/istanbul cover --dir cov-accept ./node_modules/.bin/turbo -- --setUp=test/accept/server.js --tearDown=test/accept/server.js test/accept',
+          './node_modules/.bin/istanbul report',
+          'echo "See html coverage at: `pwd`/coverage/lcov-report/index.html"'
+        ].join('&&')
+      }
+
       }
     });
 
@@ -75,12 +95,16 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-nodemon');
     grunt.loadNpmTasks('grunt-concurrent');
     grunt.loadNpmTasks('grunt-shell');
+    grunt.loadNpmTasks('grunt-env');
+
 
     // turbo task
     grunt.registerTask('test', ['shell:unit', 'shell:accept']);
     grunt.registerTask('unit', ['shell:unit']);
     grunt.registerTask('accept', ['shell:accept']);
     grunt.registerTask('coverage', ['shell:coverage']);
+    grunt.registerTask('coverage-unit', ['shell:coverage_unit']);
+    grunt.registerTask('coverage-accept', ['shell:coverage_accept']);
 
     //Making grunt default to force in order not to break the project.
     grunt.option('force', true);
