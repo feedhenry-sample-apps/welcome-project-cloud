@@ -8,6 +8,7 @@ var app = express();
 app.use('/sys', mbaas.sys(securableEndpoints));
 app.use('/mbaas', mbaas.mbaas);
 
+app.use(mbaas.fhmiddleware());
 app.use('/', require('./lib/cloud.js')());
 
 // You can define custom URL handlers here, like this one:
