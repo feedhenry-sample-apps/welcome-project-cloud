@@ -3,8 +3,12 @@ var mbaasApi = require('fh-mbaas-api');
 var mbaasExpress = mbaasApi.mbaasExpress();
 
 var app = express();
-app.use('/sys', mbaasExpress.sys([]));
-app.use('/mbaasExpress', mbaasExpress.mbaas);
+// Note: the order which we add middleware to Express here is important!
+app.use('/sys', mbaasExpress.sys(securableEndpoints));
+app.use('/mbaas', mbaasExpress.mbaas);
+
+// Note: important that this is added just before your own Routes
+app.use(mbaasExpress.fhmiddleware());
 app.use('/cloud', require('lib/cloud.js')());
 
 app.use('/', function(req, res){

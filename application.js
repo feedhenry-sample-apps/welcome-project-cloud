@@ -1,5 +1,5 @@
-var mbaasApi = require('fh-mbaas-api');
 var express = require('express');
+var mbaasApi = require('fh-mbaas-api');
 var mbaasExpress = mbaasApi.mbaasExpress();
 
 // Securable endpoints: list the endpoints which you want to make securable here
