@@ -1,80 +1,91 @@
 'use strict';
 
 module.exports = function(grunt) {
-    // Project Configuration
-    grunt.initConfig({
-        pkg: grunt.file.readJSON('package.json'),
-        watch: {
-            js: {
-                files: ['gruntfile.js', 'application.js', 'lib/**/*.js', 'test/**/*.js'],
-                options: {
-                    livereload: true
-                }
-            },
-            html: {
-                files: ['public/views/**', 'app/views/**'],
-                options: {
-                    livereload: true
-                }
-            }
-        },
-        nodemon: {
-            dev: {
-                script: 'application.js',
-                options: {
-                    args: [],
-                    ignore: ['public/**'],
-                    ext: 'js,html',
-                    nodeArgs: [],
-                    delayTime: 1,
-                    env: {
-                        PORT: 3000
-                    },
-                    cwd: __dirname
-                }
-            }
-        },
-        concurrent: {
-            tasks: ['nodemon', 'watch'],
-            options: {
-                logConcurrentOutput: true
-            }
-        },
-        env : {
-          options : {},
-          // environment variables - see https://github.com/jsoverson/grunt-env for more information
-          local: {
-            FH_USE_LOCAL_DB: true
-          }
-        },
-      shell: {
-        unit: {
-          options: {
-            stdout: true,
-            stderr: true
+  require('time-grunt')(grunt);
+  // Project Configuration
+  grunt.initConfig({
+    pkg: grunt.file.readJSON('package.json'),
+    watch: {
+      js: {
+        files: ['gruntfile.js', 'application.js', 'lib/**/*.js', 'test/**/*.js'],
+        options: {
+          livereload: true
+        }
+      },
+      html: {
+        files: ['public/views/**', 'app/views/**'],
+        options: {
+          livereload: true
+        }
+      }
+    },
+    nodemon: {
+      dev: {
+        script: 'application.js',
+        options: {
+          args: [],
+          ignore: ['public/**'],
+          ext: 'js,html',
+          nodeArgs: [],
+          delayTime: 1,
+          env: {
+            PORT: 3000
           },
-          command: 'env NODE_PATH=. ./node_modules/.bin/turbo test/unit'
+          cwd: __dirname
+        }
+      }
+    },
+    concurrent: {
+      serve: ['nodemon', 'watch'],
+      debug: ['node-inspector', 'shell:debug', 'open:debug'],
+      options: {
+        logConcurrentOutput: true
+      }
+    },
+    env : {
+      options : {},
+      // environment variables - see https://github.com/jsoverson/grunt-env for more information
+      local: {
+        FH_USE_LOCAL_DB: true
+      }
+    },
+    'node-inspector': {
+      dev: {}
+    },
+    shell: {
+      debug: {
+        options: {
+          stdout: true
         },
-        accept: {
-          options: {
-            stdout: true,
-            stderr: true
-          },
-          command: 'env NODE_PATH=. ./node_modules/.bin/turbo --setUp=test/accept/server.js --tearDown=test/accept/server.js test/accept'
+        command: 'env NODE_PATH=. node --debug-brk application.js'
+      },
+      unit: {
+        options: {
+          stdout: true,
+          stderr: true
         },
-        coverage: {
-          options: {
-            stdout: true,
-            stderr: true
-          },
-          command: [
-                'rm -rf coverage cov-unit',
-                'env NODE_PATH=. ./node_modules/.bin/istanbul cover --dir cov-unit ./node_modules/.bin/turbo -- test/unit',
-                './node_modules/.bin/istanbul report',
-                'echo "See html coverage at: `pwd`/coverage/lcov-report/index.html"'
-            ].join('&&')
+        command: 'env NODE_PATH=. ./node_modules/.bin/turbo test/unit'
+      },
+      accept: {
+        options: {
+          stdout: true,
+          stderr: true
         },
-        coverage_accept: {
+        command: 'env NODE_PATH=. ./node_modules/.bin/turbo --setUp=test/accept/server.js --tearDown=test/accept/server.js test/accept'
+      },
+      coverage_unit: {
+        options: {
+          stdout: true,
+          stderr: true
+        },
+        command: [
+          'rm -rf coverage cov-unit',
+          'env NODE_PATH=. ./node_modules/.bin/istanbul cover --dir cov-unit ./node_modules/.bin/turbo -- test/unit',
+          './node_modules/.bin/istanbul report',
+          'echo "See html coverage at: `pwd`/coverage/lcov-report/index.html"'
+        ].join('&&')
+      },
+      coverage_accept: {
         options: {
           stdout: true,
           stderr: true
@@ -86,29 +97,48 @@ module.exports = function(grunt) {
           'echo "See html coverage at: `pwd`/coverage/lcov-report/index.html"'
         ].join('&&')
       }
-
+    },
+    open: {
+      debug: {
+        path: 'http://127.0.0.1:8080/debug?port=5858',
+        app: 'Google Chrome'
+      },
+      platoReport: {
+        path: './plato/index.html',
+        app: 'Google Chrome'
       }
-    });
+    },
+    plato: {
+      src: {
+        options : {
+          jshint : grunt.file.readJSON('.jshintrc')
+        },
+        files: {
+          'plato': ['lib/**/*.js']
+        }
+      }
+    }
+  });
 
-    //Load NPM tasks
-    grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-nodemon');
-    grunt.loadNpmTasks('grunt-concurrent');
-    grunt.loadNpmTasks('grunt-shell');
-    grunt.loadNpmTasks('grunt-env');
+  // Load NPM tasks
+  require('load-grunt-tasks')(grunt, {scope: 'devDependencies'});
 
+  // Testing tasks
+  grunt.registerTask('test', ['shell:unit', 'shell:accept']);
+  grunt.registerTask('unit', ['shell:unit']);
+  grunt.registerTask('accept', ['env:local', 'shell:accept']);
 
-    // turbo task
-    grunt.registerTask('test', ['shell:unit', 'shell:accept']);
-    grunt.registerTask('unit', ['shell:unit']);
-    grunt.registerTask('accept', ['shell:accept']);
-    grunt.registerTask('coverage', ['shell:coverage']);
-    grunt.registerTask('coverage-unit', ['shell:coverage_unit']);
-    grunt.registerTask('coverage-accept', ['shell:coverage_accept']);
+  // Coverate tasks
+  grunt.registerTask('coverage', ['shell:coverage_unit', 'shell:coverage_accept']);
+  grunt.registerTask('coverage-unit', ['shell:coverage_unit']);
+  grunt.registerTask('coverage-accept', ['env:local', 'shell:coverage_accept']);
 
-    //Making grunt default to force in order not to break the project.
-    grunt.option('force', true);
+  // Making grunt default to force in order not to break the project.
+  grunt.option('force', true);
 
-    grunt.registerTask('serve', ['concurrent']);
-    grunt.registerTask('default', ['serve']);
+  grunt.registerTask('analysis', ['plato:src', 'open:platoReport']);
+
+  grunt.registerTask('serve', ['env:local', 'concurrent:serve']);
+  grunt.registerTask('debug', ['env:local', 'concurrent:debug']);
+  grunt.registerTask('default', ['serve']);
 };
