@@ -23,4 +23,6 @@ build
 
 node_modules
 *~
-
+.idea/
+cov-unit/
+coverage/
