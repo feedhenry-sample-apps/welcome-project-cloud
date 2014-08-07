@@ -1,16 +1,24 @@
-var mbaas = require('fh-mbaas-express');
 var express = require('express');
+var mbaasApi = require('fh-mbaas-api');
+var mbaasExpress = mbaasApi.mbaasExpress();
+
+// Securable endpoints: list the endpoints which you want to make securable here
+var securableEndpoints = ['hello'];
 
 var app = express();
-app.use('/sys', mbaas.sys([]));
-app.use('/mbaas', mbaas.mbaas);
+// Note: the order which we add middleware to Express here is important!
+app.use('/sys', mbaasExpress.sys(securableEndpoints));
+app.use('/mbaas', mbaasExpress.mbaas);
+
+// Note: important that this is added just before your own Routes
+app.use(mbaasExpress.fhmiddleware());
 app.use('/cloud', require('lib/cloud.js')());
 
 app.use('/', function(req, res){
   res.end('Your Cloud App is Running');
 });
 
-app.use(mbaas.errorHandler());
+app.use(mbaasExpress.errorHandler());
 
 var server;
 
@@ -26,13 +34,9 @@ exports.tearDown = function(finish) {
   if (server) {
     server.close(function() {
       // close down database connection
-      var dbConn = require('lib/databrowser.js').getDbConn()
-      if (dbConn) dbConn.close();
-
-      // close down redis connection
-      var cc = require('lib/cacheclient.js').cacheClient;
-      if (cc) cc.quit();
-      finish();
+      require('lib/databrowser.js').disconnectDB(function() {
+        finish();
+      });
     });
   }
 };

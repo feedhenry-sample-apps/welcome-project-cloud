@@ -1,57 +1,47 @@
 //test app activity function
-var cc = require("lib/cacheclient.js");
-var cacheClient = cc.cacheClient;
 var assert = require('assert');
 var util = require('util');
+var proxyquire = require('proxyquire');
+var globals = require('./global.js');
 
-var fh = {
-  cache : function(params, cb){
-    var key = params.key;
-    if(params.act === "save"){
-      cacheClient.set(key, params.value, function(err, reply){
-        return cb(err, reply);
-      });
-    } else if(params.act === "load"){
-      cacheClient.get(key, function(err, reply){
-        return cb(err, reply);
-      });
-    }
-  }
-};
-
-var record = require("lib/record_activity.js");
-var recordActivity = record.recordActivity;
-var listActivity = record.listActivity;
-var setCacheKey = record.setCacheKey;
-
-var testCacheKey = "test_activity_cache_key";
+var activity = proxyquire("lib/activity.js", {'fh-mbaas-api':globals.fh});
+var recordActivity = activity.record;
+var listActivity = activity.list;
+var setCacheKey = activity.setCacheKey;
 
 exports.setUp = function(finish){
-  setCacheKey(testCacheKey);
-  cacheClient.del(testCacheKey, function(err, reply){
-    assert.ok(!err, 'Unexpected error: ', util.inspect(err));
-    finish();
-  });
+  globals.cacheData = {};
+  finish();
 };
 
 exports.tearDown = function(finish){
-  cacheClient.del(testCacheKey, function(err, reply){
-    cacheClient.quit();
-    finish();
-  });
+  return finish();
 };
 
 exports.testActivity = function(finish){
+  var testCacheKey = "test_activity_cache_key";
+  setCacheKey(testCacheKey);
+
   listActivity({}, function(err, res){
+    console.log('RES', res);
     assert.ok(!err, 'Unexpected error: ', util.inspect(err));
+    assert.ok(res.activity);
+    assert.equal(0, res.activity.length);
     recordActivity({action: "test1"}, function(err, res){
       assert.ok(!err, 'Unexpected error: ', util.inspect(err));
       listActivity({}, function(err, res){
         assert.ok(!err, 'Unexpected error: ', util.inspect(err));
+        assert.ok(res.activity);
+        assert.equal(1, res.activity.length);
+        assert.equal('test1', res.activity[0].action);
         recordActivity({action: "test2"}, function(err, res){
           assert.ok(!err, 'Unexpected error: ', util.inspect(err));
           listActivity({}, function(err, res){
             assert.ok(!err, 'Unexpected error: ', util.inspect(err));
+            assert.ok(res.activity);
+            assert.equal(2, res.activity.length);
+            assert.equal('test1', res.activity[0].action);
+            assert.equal('test2', res.activity[1].action);
             finish();
           });
         });
@@ -59,3 +49,21 @@ exports.testActivity = function(finish){
     });
   });
 };
+
+exports.testCacheError = function(finish) {
+  var testCacheKey = "error";
+  setCacheKey(testCacheKey);
+
+  listActivity({}, function (err, res) {
+    assert.ok(err);
+    assert(err.indexOf('CACHE ERROR') > -1);
+    assert.ok(!res);
+
+    recordActivity({action: "test1"}, function (err, res) {
+      assert.ok(err);
+      assert(err.indexOf('CACHE ERROR') > -1);
+      assert.ok(!res);
+      finish();
+    });
+  });
+}

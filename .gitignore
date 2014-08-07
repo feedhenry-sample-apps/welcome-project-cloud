@@ -14,15 +14,13 @@ lcov.info
 *.out
 *.pid
 *.gz
-
 pids
 logs
 results
 build
 .grunt
-
 node_modules
 *~
-.idea/
+.idea
 cov-unit/
 coverage/

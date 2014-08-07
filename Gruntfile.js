@@ -64,7 +64,7 @@ module.exports = function(grunt) {
           stdout: true,
           stderr: true
         },
-        command: 'env NODE_PATH=. ./node_modules/.bin/turbo test/unit'
+        command: 'env NODE_PATH=. ./node_modules/.bin/turbo --setUp=test/unit/global.js --tearDown=test/unit/global.js --series=true test/unit'
       },
       accept: {
         options: {
@@ -80,7 +80,7 @@ module.exports = function(grunt) {
         },
         command: [
           'rm -rf coverage cov-unit',
-          'env NODE_PATH=. ./node_modules/.bin/istanbul cover --dir cov-unit ./node_modules/.bin/turbo -- test/unit',
+          'env NODE_PATH=. ./node_modules/.bin/istanbul cover --dir cov-unit ./node_modules/.bin/turbo -- --setUp=test/unit/global.js --tearDown=test/unit/global.js --series=true test/unit',
           './node_modules/.bin/istanbul report',
           'echo "See html coverage at: `pwd`/coverage/lcov-report/index.html"'
         ].join('&&')
