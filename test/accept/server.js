@@ -33,10 +33,15 @@ exports.setUp = function(finish){
 exports.tearDown = function(finish) {
   if (server) {
     server.close(function() {
+
       // close down database connection
-      require('lib/databrowser.js').disconnectDB(function() {
-        finish();
-      });
+      require('lib/databrowser.js').disconnectDB(function () {
+
+        // Ensure mBass API shuts down cleanly.
+        mbaasApi.shutdown(function() {
+          finish();
+        })
+      });;
     });
   }
 };
