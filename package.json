@@ -1,6 +1,6 @@
 {
   "name": "FHWelcomeApp",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "dependencies": {
     "express": "4.0.0",
     "fh-mbaas-api": "~4.0.0",
