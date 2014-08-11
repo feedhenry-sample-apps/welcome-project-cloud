@@ -7,7 +7,7 @@ var securableEndpoints = ['hello'];
 
 var app = express();
 app.use('/sys', mbaasExpress.sys(securableEndpoints));
-app.use('/mbaasExpress', mbaasExpress.mbaas);
+app.use('/mbaas', mbaasExpress.mbaas);
 
 // Note: important that this is added just before your own Routes
 app.use(mbaasExpress.fhmiddleware());

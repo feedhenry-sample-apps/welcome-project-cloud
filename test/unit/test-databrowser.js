@@ -73,7 +73,7 @@ exports.testSave = function(finish) {
     assert.ok(res);
     assert.equal("ok", res.status)
 
-    process.env.FH_DB_PERAPP = true;
+    process.env.FH_MONGODB_CONN_URL = 'ok';
 
     databrowser.save(params, function(err, res) {
 
@@ -122,7 +122,7 @@ exports.testErrors = function(finish) {
   var connectDB = sinon.spy(databrowser, 'connectDB');
   var disconnectDB = sinon.spy(databrowser, 'disconnectDB');
 
-  delete process.env.FH_DB_PERAPP;
+  delete process.env.FH_MONGODB_CONN_URL;
 
   // Disconnect from the DB so we can test an error connection
   databrowser.disconnectDB(function () {
@@ -139,8 +139,6 @@ exports.testErrors = function(finish) {
       assert.ok(!res);
 
       // Ensure we route through direct DB connection
-      process.env.FH_DB_PERAPP = true;
-
       // Use a specially crafted URL which the MongoDB mock understands to test the error handler
       process.env.FH_MONGODB_CONN_URL = "error";
 
