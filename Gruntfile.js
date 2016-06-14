@@ -71,7 +71,7 @@ module.exports = function(grunt) {
           stdout: true,
           stderr: true
         },
-        command: 'env NODE_PATH=. ./node_modules/.bin/turbo --setUp=test/accept/server.js --tearDown=test/accept/server.js test/accept'
+        command: 'env NODE_PATH=. ./node_modules/.bin/turbo --setUp=node application.js --tearDown=test/accept/server.js test/accept'
       },
       coverage_unit: {
         options: {
