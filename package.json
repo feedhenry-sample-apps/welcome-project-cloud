@@ -31,7 +31,7 @@
     "sinon": "~1.10.3",
     "nock": "~0.44.0"
   },
-  "license": "mit",
+  "license": "Apache-2.0",
   "main": "application.js",
   "scripts": {
     "start": "node application.js"
