@@ -1,4 +1,5 @@
 # Development
+[![Dependency Status](https://img.shields.io/david/feedhenry-templates/welcome-cloud.svg?style=flat-square)](https://david-dm.org/feedhenry-templates/welcome-cloud)
 
 See [Cloud Development](http://docs.feedhenry.com/v2/cloud_development.html) page about how to develop cloud app.
 
