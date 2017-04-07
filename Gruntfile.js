@@ -64,14 +64,14 @@ module.exports = function(grunt) {
           stdout: true,
           stderr: true
         },
-        command: 'env NODE_PATH=. ./node_modules/.bin/turbo --setUp=test/unit/global.js --tearDown=test/unit/global.js --series=true test/unit'
+        command: 'env NODE_PATH=. ./node_modules/.bin/mocha -A -u exports --recursive test/unit/test-*.js'
       },
       accept: {
         options: {
           stdout: true,
           stderr: true
         },
-        command: 'env NODE_PATH=. ./node_modules/.bin/turbo --setUp=node application.js --tearDown=test/accept/server.js test/accept'
+        command: 'env NODE_PATH=. ./node_modules/.bin/mocha -A -u exports --recursive test/accept/test-*.js'
       },
       coverage_unit: {
         options: {
@@ -80,7 +80,7 @@ module.exports = function(grunt) {
         },
         command: [
           'rm -rf coverage cov-unit',
-          'env NODE_PATH=. ./node_modules/.bin/istanbul cover --dir cov-unit ./node_modules/.bin/turbo -- --setUp=test/unit/global.js --tearDown=test/unit/global.js --series=true test/unit',
+          'env NODE_PATH=. ./node_modules/.bin/istanbul cover --dir cov-unit ./node_modules/.bin/_mocha -- -u exports --recursive test/unit/test-*.js',
           './node_modules/.bin/istanbul report',
           'echo "See html coverage at: `pwd`/coverage/lcov-report/index.html"'
         ].join('&&')
@@ -91,9 +91,9 @@ module.exports = function(grunt) {
           stderr: true
         },
         command: [
-          'rm -rf coverage cov-accept',
-          'env NODE_PATH=. ./node_modules/.bin/istanbul cover --dir cov-accept ./node_modules/.bin/turbo -- --setUp=test/accept/server.js --tearDown=test/accept/server.js test/accept',
-          './node_modules/.bin/istanbul report',
+          'rm -rf coverage cov-accept ',
+          'env NODE_PATH=. ./node_modules/.bin/istanbul cover --dir cov-accept ./node_modules/.bin/_mocha -- -u exports --recursive test/accept/test-*.js ',
+          './node_modules/.bin/istanbul report ',
           'echo "See html coverage at: `pwd`/coverage/lcov-report/index.html"'
         ].join('&&')
       }

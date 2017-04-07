@@ -14,11 +14,11 @@ var mocks = {
 
 var weather = proxyquire('lib/weather.js', mocks);
 
-exports.setUp = function(finish){
+exports.before = function(finish){
   return finish();
 };
 
-exports.tearDown = function(finish){
+exports.after = function(finish){
   return finish();
 };
 

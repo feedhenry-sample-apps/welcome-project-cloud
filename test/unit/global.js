@@ -1,9 +1,9 @@
-exports.setUp = function(finish){
+exports.before = function(finish){
   console.log('*** GLOBAL Setup ***');
-  finish();
+  return finish();
 };
 
-exports.tearDown = function(finish){
+exports.after = function(finish){
   console.log('*** GLOBAL Teardown ***');
   require('fh-mbaas-api').shutdown(function() {
     return finish();
