@@ -13,8 +13,9 @@ To run:
 npm run unit
 ```
 * acceptance tests
+As pre-requisite, have [redis locally installed](https://redis.io/).
 ```    
-mongod
+redis-server /usr/local/etc/redis.conf
 npm run serve
 npm run accept
 ```

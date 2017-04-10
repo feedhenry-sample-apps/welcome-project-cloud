@@ -37,13 +37,14 @@ exports.testGetWeather = function(finish) {
 
 
 exports.testSaveData = function(finish){
-  process.env.FH_DB_PERAPP = true;
-  process.env.FH_MONGODB_CONN_URL = "mongodb://127.0.0.1:27017/test";
+  nock('http://127.0.0.1:8001', {"encodedQueryParams":true})
+   .post('/saveData', {"collection": "test", "document": {"name" : "testing"}})
+   .reply(200, {"data":{ foo: "bar" }});
 
   request({url: baseUrl + "saveData", method: 'POST', json: {"collection": "test", "document": {"name" : "testing"}}}, function(err, response, body){
     assert.ok(!err, 'Unexpected error: ', util.inspect(err));
     assert.equal(200, response.statusCode, 'Unexpected response: ' + util.inspect(response.body));
-    return finish();
+    finish();
   });
 };
 
