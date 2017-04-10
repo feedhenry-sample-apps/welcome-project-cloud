@@ -16,7 +16,6 @@ npm run unit
 As pre-requisite, have [redis locally installed](https://redis.io/).
 ```    
 redis-server /usr/local/etc/redis.conf
-npm run serve
 npm run accept
 ```
 * coverage report for unit tests:
