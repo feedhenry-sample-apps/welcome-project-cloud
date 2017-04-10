@@ -40,11 +40,11 @@ var mongodb = {
 
 var databrowser = proxyquire('lib/databrowser.js', {'mongodb': mongodb, 'fh-mbaas-api': globals.fh});
 
-exports.setUp = function(finish) {
+exports.before = function(finish) {
   return finish();
 }
 
-exports.tearDown = function(finish) {
+exports.after = function(finish) {
   return finish();
 }
 
