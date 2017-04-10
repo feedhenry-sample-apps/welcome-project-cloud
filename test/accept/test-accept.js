@@ -1,8 +1,8 @@
 //acceptance tests
-var request = require("request");
 var util = require('util');
 var assert = require('assert');
 var nock = require('nock');
+var request = require("request");
 var grunt = require('grunt');
 var baseUrl = "http://127.0.0.1:8001/";
 
@@ -16,16 +16,24 @@ exports.testCloudCall = function(finish){
 };
 
 // TODO weather provider need keys
-// exports.testGetWeather = function(finish) {
-//   request({url: baseUrl + "getWeather", method: 'POST', json: {"lat":52.251,"lon":-7.153}}, function(err, response, body){
-//   console.log("body: " + util.inspect(body))
-//     assert.ok(!err, 'Unexpected error: ', util.inspect(err));
-//     assert.equal(200, response.statusCode);
-//     assert.ok(body.data);
-//     assert.equal("2013-09-19", body.data[0].date);
-//     return finish();
-//   });
-// };
+exports.testGetWeather = function(finish) {
+  nock('http://127.0.0.1:8001', {"encodedQueryParams":true})
+   .post('/getWeather', {"lat":52.251,"lon":-7.153})
+   .reply(200, {"data":{ date: '2013-04-10',
+       high: '11',
+       low: '2',
+       desc: 'Partly cloudy',
+       icon: 'http://cdn.worldweatheronline.net/images/wsymbols01_png_64/wsymbol_0002_sunny_intervals.png' }});
+
+  request({url: baseUrl + "getWeather", method: 'POST', json: {"lat":52.251,"lon":-7.153}}, function(err, response, body){
+  console.log("body: " + util.inspect(body))
+    assert.ok(!err, 'Unexpected error: ', util.inspect(err));
+    assert.equal(200, response.statusCode);
+    assert.ok(body.data);
+    assert.equal("2013-04-10", body.data.date);
+    finish();
+  });
+};
 
 
 exports.testSaveData = function(finish){
