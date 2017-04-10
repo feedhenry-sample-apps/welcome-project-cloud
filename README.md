@@ -15,7 +15,7 @@ npm run unit
 * acceptance tests
 ```    
 mongod
-npm start
+npm run serve
 npm run accept
 ```
 * coverage report for unit tests:
