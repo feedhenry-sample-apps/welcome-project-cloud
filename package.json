@@ -2,15 +2,15 @@
   "name": "welcome-app",
   "version": "0.1.1",
   "dependencies": {
-    "express": "4.0.0",
-    "fh-mbaas-api": "~7.0.9",
-    "limiter": "~1.0.5",
-    "request": "2.79.0",
+    "express": "4.15.3",
+    "fh-mbaas-api": "~7.0.10",
+    "limiter": "~1.1.0",
+    "request": "2.81.0",
     "redis": "0.8.2",
-    "mongodb": ">=2.1.0",
+    "mongodb": ">=2.2.27",
     "body-parser": "~1.0.2",
-    "cors": "~2.2.0",
-    "underscore": "~1.6.0"
+    "cors": "~2.8.3",
+    "underscore": "~1.8.3"
   },
   "devDependencies": {
     "grunt": "^1.0.1",
@@ -21,6 +21,7 @@
     "grunt-nodemon": "^0.4.2",
     "grunt-open": "^0.2.3",
     "grunt-shell": "^2.1.0",
+    "grunt-plato": "1.4.0",
     "istanbul": "0.2.7",
     "load-grunt-tasks": "~0.4.0",
     "mocha": "3.2.0",
@@ -37,10 +38,12 @@
   "scripts": {
     "start": "node application.js",
     "serve": "grunt serve",
+    "test": "grunt test",
     "unit": "grunt unit",
     "accept": "grunt accept",
-    "test": "npm run unit",
+    "coverage": "grunt coverage",
     "coverage-unit": "grunt coverage-unit",
-    "coverage-accept": "grunt coverage-unit"
+    "coverage-accept": "grunt coverage-accept",
+    "analysis": "grunt analysis"
   }
 }
