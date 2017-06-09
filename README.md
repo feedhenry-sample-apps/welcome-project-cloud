@@ -12,7 +12,7 @@ npm install
 
 ### Setup MongoDB
 
-In order to run the Welcome server locally you'll need to have [MongoDB](https://www.mongodb.com/) installed and running on your local machine. 
+In order to run the Welcome server locally you'll need to have [MongoDB](https://www.mongodb.com/) installed and running on your local machine.
 
 Start MongoDB server with:
 
@@ -20,7 +20,7 @@ Start MongoDB server with:
 mongod
 ```
 
-By default, the Welcome server will try to access MongoDB on port `11211`, if you are running MongoDB on a different port you should set the `FH_MONGODB_CONN_URL` environment variable to the MongoDB connection URL.
+By default, the Welcome server will try to access MongoDB on port `27017`, if you are running MongoDB on a different port you should set the `FH_MONGODB_CONN_URL` environment variable to the MongoDB connection URL.
 
 ### Setup Redis
 
@@ -98,5 +98,3 @@ To get Plato's JavaScript source code visualization, static analysis, and comple
 ```
 npm run analysis
 ```
-
-
