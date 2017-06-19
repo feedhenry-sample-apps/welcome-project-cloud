@@ -9,12 +9,12 @@ var recordActivity = activity.record;
 var listActivity = activity.list;
 var setCacheKey = activity.setCacheKey;
 
-exports.setUp = function(finish){
+exports.before = function(finish){
   globals.cacheData = {};
-  finish();
+  return finish();
 };
 
-exports.tearDown = function(finish){
+exports.after = function(finish){
   return finish();
 };
 
@@ -42,7 +42,7 @@ exports.testActivity = function(finish){
             assert.equal(2, res.activity.length);
             assert.equal('test1', res.activity[0].action);
             assert.equal('test2', res.activity[1].action);
-            finish();
+            return finish();
           });
         });
       });
@@ -63,7 +63,7 @@ exports.testCacheError = function(finish) {
       assert.ok(err);
       assert(err.indexOf('CACHE ERROR') > -1);
       assert.ok(!res);
-      finish();
+      return finish();
     });
   });
 }
