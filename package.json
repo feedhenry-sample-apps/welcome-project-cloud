@@ -3,7 +3,7 @@
   "version": "0.1.1",
   "dependencies": {
     "express": "4.15.3",
-    "fh-mbaas-api": "~7.0.10",
+    "fh-mbaas-api": "~7.0.15",
     "limiter": "~1.1.0",
     "request": "2.81.0",
     "redis": "0.8.2",
