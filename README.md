@@ -8,6 +8,17 @@ Cloud template app for the Welcome project. It listens for FeedHenry SDK cloud c
 npm install
 ```
 
+## Weather data setup
+
+In order to use the location based weather functionality within the app you will need a valid API key for the worldweatheronline.com service. An API key can be acquired [here](http://developer.worldweatheronline.com). 
+
+When you have a valid API key, add it to [lib/weather.js](https://github.com/feedhenry-templates/welcome-cloud/blob/master/lib/weather.js#L10):
+
+```javascript
+// PLEASE ADD YOUR OWN API_KEY FOR http://developer.worldweatheronline.com
+var API_KEY = "yourNewKey";
+```
+
 ## Run locally
 
 ### Setup MongoDB
