@@ -10,7 +10,8 @@
     "mongodb": "2.2.27",
     "body-parser": "~1.0.2",
     "cors": "~2.8.3",
-    "underscore": "~1.8.3"
+    "underscore": "~1.8.3",
+    "fh-js-sdk": "~3.0.2"
   },
   "devDependencies": {
     "grunt": "^1.0.1",
